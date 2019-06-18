@@ -39,7 +39,7 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
                 // The filter needs this auth manager to authenticate the user.
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig))
                 .authorizeRequests()
-                // allow all POST requests
+                // allow all POST requests at jwtConfig.getURI()
                 .antMatchers(HttpMethod.POST, jwtConfig.getUri()).permitAll()
                 // any other requests must be authenticated
                 .anyRequest().authenticated();

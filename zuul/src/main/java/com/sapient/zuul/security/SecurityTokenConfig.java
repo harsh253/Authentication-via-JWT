@@ -31,10 +31,12 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new JwtTokenAuthenticationFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
                 // authorization requests config
                 .authorizeRequests()
-                // allow all who are accessing "auth" service
+                // all are allowed to access the auth service
                 .antMatchers(HttpMethod.POST, jwtConfig.getUri()).permitAll()
                 // must be an admin if trying to access admin area (authentication is also required here)
-                .antMatchers("/gallery" + "/admin/**").hasRole("ADMIN")
+                .antMatchers("/gallery/admin/**" , "/gallery/viewer/**", "/gallery/trader/**").hasRole("ADMIN")
+                .antMatchers("/gallery/trader/**" , "/gallery/viewer/**").hasRole("TRADER")
+                .antMatchers( "/gallery/viewer/**").hasRole("USER")
                 // Any other request must be authenticated
                 .anyRequest().authenticated();
     }

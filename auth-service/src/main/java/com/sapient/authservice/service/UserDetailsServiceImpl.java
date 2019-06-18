@@ -1,8 +1,9 @@
 package com.sapient.authservice.service;
 
 
+import com.sapient.authservice.dao.UsersDAO;
+import com.sapient.authservice.entities.ImmutableUsersDBModel;
 import com.sapient.authservice.entities.Users;
-import com.sapient.authservice.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -11,10 +12,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -23,10 +22,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 
     @Autowired
-    private UsersRepository usersRepository;
+    UsersDAO dao;
 
-    public Users findByUsername(String username){
-        return usersRepository.findByUsername(username);
+    public ImmutableUsersDBModel findByUsername(String username){
+        return dao.getUserByUsername(username);
     }
 
     @Override
@@ -39,23 +38,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 //        );
 
 
-        Users user = findByUsername(username);
+        ImmutableUsersDBModel user = findByUsername(username);
 
-            String name = user.getUsername();
+            String name = user.username();
         if(name == null){
             throw new UsernameNotFoundException("User not authorized.");
         }
 
             if (name.equals(username)) {
 
-                // Remember that Spring needs roles to be in this format: "ROLE_" + userRole (i.e. "ROLE_ADMIN")
+                // Spring needs roles to be in this format: "ROLE_" + userRole (i.e. "ROLE_ADMIN")
                 // So, we need to set it to that format, so we can verify and compare roles (i.e. hasRole("ADMIN")).
-                List<GrantedAuthority> grantedAuthorities = AuthorityUtils
-                        .commaSeparatedStringToAuthorityList("ROLE_" + user.getRole());
-
+                List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(user.role());
+                System.out.println(user.role());
                 // The "User" class is provided by Spring and represents a model class for user to be returned by UserDetailsService
                 // And used by auth manager to verify and check user authentication.
-                return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
+                return new User(user.username(), user.password(), grantedAuthorities);
             }
 
 
@@ -63,53 +61,5 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         throw new UsernameNotFoundException("Username: " + username + " not found");
     }
 
-//    public Users createUser(Users user) {
-//        return usersRepository.insert(user);
-//    }
 
-    // A (temporary) class represent the user saved in the database.
-    private static class AppUser {
-        private Integer id;
-        private String username, password;
-        private String role;
-
-        public AppUser(Integer id, String username, String password, String role) {
-            this.id = id;
-            this.username = username;
-            this.password = password;
-            this.role = role;
-        }
-
-        public Integer getId() {
-            return id;
-        }
-
-        public void setId(Integer id) {
-            this.id = id;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public String getRole() {
-            return role;
-        }
-
-        public void setRole(String role) {
-            this.role = role;
-        }
-    }
 }

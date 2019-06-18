@@ -43,9 +43,18 @@ public class HomeController {
 
     // -------- Admin Area --------
     // This method should only be accessed by users with role of 'admin'
-    // We'll add the logic of role based auth later
     @RequestMapping("/admin")
     public String homeAdmin() {
         return "This is the admin area of Gallery service running at port: " + env.getProperty("local.server.port");
+    }
+
+    @RequestMapping("/trader")
+    public String homeTrader() {
+        return "This is the trade area of Gallery service running at port: " + env.getProperty("local.server.port");
+    }
+
+    @RequestMapping("/viewer")
+    public String homeViewer() {
+        return "This is the view area of Gallery service running at port: " + env.getProperty("local.server.port");
     }
 }

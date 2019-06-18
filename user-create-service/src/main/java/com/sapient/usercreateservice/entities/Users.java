@@ -1,58 +1,19 @@
 package com.sapient.usercreateservice.entities;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.immutables.value.Value;
 
+import java.util.Optional;
 
-@Document(collection="Users")
-public class Users {
-
-
-    @Id
-    private Integer id;
-    private String username, password;
-    private String role;
-
-    public Users() {
-    }
-
-    public Users(Integer id,  String username, String password, String role) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
+@Value.Immutable
+@JsonSerialize(as = ImmutableUsers.class)
+@JsonDeserialize(as = ImmutableUsers.class)
+public interface Users {
+    String username();
+    Optional<String> password();
+    Optional<String> fullName();
+    Optional<Double> currBal();
+    Optional<String> baseCurr();
+    Optional<String> role();
 }

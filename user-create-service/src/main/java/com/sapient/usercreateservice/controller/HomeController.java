@@ -15,9 +15,12 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
-    @PostMapping()
-    public Users postUser(){
-        return userService.createUser();
+    @PostMapping("/")
+    public void addUser(@RequestBody Users user){
+//        System.out.println(user.username() + " added");
+        userService.addUser(user);
     }
+
+
 
 }
