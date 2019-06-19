@@ -45,7 +45,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 
             // 2. Create auth object (contains credentials) which will be used by auth manager
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    creds.getUsername(), creds.getPassword(), Collections.emptyList());
+                    creds.getUserId(), creds.getPassword(), Collections.emptyList());
 
             // 3. Authentication manager authenticate the user, and use ::loadUserByUsername() method to load the user.
             return authManager.authenticate(authToken);
@@ -80,14 +80,14 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 
     // A (temporary) class just to represent the user credentials
     private static class UserCredentials {
-        private String username, password;
+        private String userId, password;
 
-        public String getUsername() {
-            return username;
+        public String getUserId() {
+            return userId;
         }
 
-        public void setUsername(String username) {
-            this.username = username;
+        public void setUserId(String userId) {
+            this.userId = userId;
         }
 
         public String getPassword() {

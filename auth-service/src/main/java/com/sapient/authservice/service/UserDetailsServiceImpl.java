@@ -24,12 +24,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     UsersDAO dao;
 
-    public ImmutableUsersDBModel findByUsername(String username){
-        return dao.getUserByUsername(username);
+    public ImmutableUsersDBModel findByUserId(String userId){
+        return dao.getUserByUserId(userId);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 
         // hard coding the users. All passwords must be encoded.
 //        final List<AppUser> users = Arrays.asList(
@@ -38,14 +38,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 //        );
 
 
-        ImmutableUsersDBModel user = findByUsername(username);
+        ImmutableUsersDBModel user = findByUserId(userId);
 
-            String name = user.username();
-        if(name == null){
+            String id = user.userId();
+        if(id == null){
             throw new UsernameNotFoundException("User not authorized.");
         }
 
-            if (name.equals(username)) {
+            if (id.equals(userId)) {
 
                 // Spring needs roles to be in this format: "ROLE_" + userRole (i.e. "ROLE_ADMIN")
                 // So, we need to set it to that format, so we can verify and compare roles (i.e. hasRole("ADMIN")).
@@ -53,12 +53,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 System.out.println(user.role());
                 // The "User" class is provided by Spring and represents a model class for user to be returned by UserDetailsService
                 // And used by auth manager to verify and check user authentication.
-                return new User(user.username(), user.password(), grantedAuthorities);
+                return new User(user.userId(), user.password(), grantedAuthorities);
             }
 
 
         // If user not found. Throw this exception.
-        throw new UsernameNotFoundException("Username: " + username + " not found");
+        throw new UsernameNotFoundException("Username: " + userId + " not found");
     }
 
 

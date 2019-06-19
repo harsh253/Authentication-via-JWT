@@ -16,8 +16,8 @@ public class UsersDAO {
         where = repository.criteria();
     }
 
-    public ImmutableUsersDBModel getUserByUsername(String username){
-        Optional<UsersDBModel> user = repository.find(where.username(username)).fetchFirst().getUnchecked();
+    public ImmutableUsersDBModel getUserByUserId(String userId){
+        Optional<UsersDBModel> user = repository.find(where.userId(userId)).fetchFirst().getUnchecked();
         if(user.isPresent()){
             ImmutableUsersDBModel validUser = ImmutableUsersDBModel.builder().from(user.get()).build();
             return validUser;

@@ -11,7 +11,7 @@ import java.util.Optional;
 @JsonSerialize(as = ImmutableUsers.class)
 @JsonDeserialize(as = ImmutableUsers.class)
 public interface Users {
-    String username();
+    String userId();
     String password();
     Optional<String> fullName();
     Optional<Double> currBal();
