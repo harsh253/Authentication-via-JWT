@@ -8,10 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import java.util.List;
 
-@RestController
-@RequestMapping("/")
+//@RestController
+//@RequestMapping("/")
+@Path("/")
 public class HomeController {
 
     @Autowired
@@ -20,15 +24,21 @@ public class HomeController {
     @Autowired
     private Environment env;
 
-    @RequestMapping("/")
+//    @RequestMapping("/")
+    @GET
+    @Produces("text/plain")
     public String home() {
         // This is useful for debugging
         // When having multiple instance of gallery service running at different ports.
         // We load balance among them, and display which instance received the request.
+
         return "Hello from Gallery Service running at port: " + env.getProperty("local.server.port");
     }
 
-    @RequestMapping("/{id}")
+//    @RequestMapping("/{id}")
+    @GET
+    @Path("/{id}")
+    @Produces("application/json")
     public Gallery getGallery(@PathVariable final int id) {
         // create gallery object
         Gallery gallery = new Gallery();
@@ -43,17 +53,26 @@ public class HomeController {
 
     // -------- Admin Area --------
     // This method should only be accessed by users with role of 'admin'
-    @RequestMapping("/admin")
+//    @RequestMapping("/admin")
+    @GET
+    @Path("/admin")
+    @Produces("text/plain")
     public String homeAdmin() {
         return "This is the admin area of Gallery service running at port: " + env.getProperty("local.server.port");
     }
 
-    @RequestMapping("/trader")
+//    @RequestMapping("/trader")
+    @GET
+    @Path("/trader")
+    @Produces("text/plain")
     public String homeTrader() {
         return "This is the trade area of Gallery service running at port: " + env.getProperty("local.server.port");
     }
 
-    @RequestMapping("/viewer")
+//    @RequestMapping("/viewer")
+    @GET
+    @Path("/viewer")
+    @Produces("text/plain")
     public String homeViewer() {
         return "This is the view area of Gallery service running at port: " + env.getProperty("local.server.port");
     }

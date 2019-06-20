@@ -8,17 +8,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/")
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+
+//@RestController
+//@RequestMapping("/")
+@Path("/")
 public class HomeController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping("/")
-    public void addUser(@RequestBody Users user){
+//    @PostMapping("/")
+    @POST
+    @Consumes("application/json")
+    public String addUser(@RequestBody Users user){
 //        System.out.println(user.username() + " added");
         userService.addUser(user);
+        return user.userId() + " added to DB";
     }
 
 

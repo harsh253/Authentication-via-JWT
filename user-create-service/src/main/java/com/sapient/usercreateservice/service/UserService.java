@@ -4,7 +4,7 @@ import com.sapient.usercreateservice.dao.UsersDAO;
 import com.sapient.usercreateservice.entities.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 @Service
 public class UserService {

@@ -69,7 +69,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             }
 
         } catch (Exception e) {
-            // In case of failure. Make sure it's clear; so guarantee that the user won't be authenticated
+            // In case of failure, make sure the user won't be authenticated
             SecurityContextHolder.clearContext();
         }
 
